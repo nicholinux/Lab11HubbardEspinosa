@@ -9,17 +9,26 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * File: Lab11Prob01.java
+ * Class: CSCI 1302
+ * Author: Lab11EspinosaHubbard
+ * Created on: Apr 25, 2025
+ * Last Modified: Apr 25, 2025
+ * Description: Prob 03
+ */
+
 public class Lab11Prob02 {
 
 	public static void main(String[] args) {
 		File fileInput = new File("src/people.dat");
 		File fileOutput = new File("src/people-salary.dat");
-		
+
 		ArrayList<Person> people = new ArrayList<>();
 
 		try (DataInputStream input = new DataInputStream(new FileInputStream(fileInput));
-			DataOutputStream output = new DataOutputStream(new FileOutputStream(fileOutput));) {
-			
+				DataOutputStream output = new DataOutputStream(new FileOutputStream(fileOutput));) {
+
 			int age;
 			String fullName;
 			String address;
@@ -32,15 +41,15 @@ public class Lab11Prob02 {
 				address = input.readUTF();
 				zipCode = input.readInt();
 				salary = input.readDouble();
-				
+
 				Person p = new Person();
-				 p.setAge(age);
-	             p.setName(fullName);
-	             p.setAddress(address);
-	             p.setZipCode(zipCode);
-	             p.setSalary(salary);
-	             
-	             people.add(p);
+				p.setAge(age);
+				p.setName(fullName);
+				p.setAddress(address);
+				p.setZipCode(zipCode);
+				p.setSalary(salary);
+
+				people.add(p);
 
 				System.out.printf("%d %s %s %d% .2f%n", age, fullName, address, zipCode, salary);
 				output.writeInt(age);
@@ -55,21 +64,17 @@ public class Lab11Prob02 {
 		} catch (IOException ex) {
 
 		}
-		
+
 		Collections.sort(people);
-		
-		try (DataOutputStream output = new DataOutputStream(new FileOutputStream(fileOutput)))
-        {
-            for (Person p : people)
-            {
-                output.writeUTF(p.toString());
-            }
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
-    }
+
+		try (DataOutputStream output = new DataOutputStream(new FileOutputStream(fileOutput))) {
+			for (Person p : people) {
+				output.writeUTF(p.toString());
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
 
 }
 
@@ -86,7 +91,7 @@ class Person implements Comparable<Person> {
 		this.address = "";
 		this.zipCode = 0;
 		this.salary = 0.0;
-	}	
+	}
 
 	public int getAge() {
 		return age;
@@ -130,7 +135,7 @@ class Person implements Comparable<Person> {
 
 	@Override
 	public String toString() {
-		return String.format("Age: %d%n" + "Name: %s%n" + "Address: %s%n" + "Zip Code: %d%n" + "Salary: $%.2f%n",
+		return String.format("Age: %d%n" + "Name: %s%n" + "Address: %s%n" + "Zip Code: %d%n" + "Salary: $%,.2f%n",
 				getAge(), getName(), getAddress(), getZipCode(), getSalary());
 	}
 
