@@ -5,15 +5,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Lab11Prob02 {
 
 	public static void main(String[] args) {
 		File fileInput = new File("src/people.dat");
-		File fileOutput = new File("src/people-copy.dat");
+		File fileOutput = new File("src/people-salary.dat");
+		
+		ArrayList<Person> people = new ArrayList<>();
 
 		try (DataInputStream input = new DataInputStream(new FileInputStream(fileInput));
-				DataOutputStream output = new DataOutputStream(new FileOutputStream(fileOutput));) {
+			DataOutputStream output = new DataOutputStream(new FileOutputStream(fileOutput));) {
+			
 			int age;
 			String fullName;
 			String address;
@@ -26,6 +32,15 @@ public class Lab11Prob02 {
 				address = input.readUTF();
 				zipCode = input.readInt();
 				salary = input.readDouble();
+				
+				Person p = new Person();
+				 p.setAge(age);
+	             p.setName(fullName);
+	             p.setAddress(address);
+	             p.setZipCode(zipCode);
+	             p.setSalary(salary);
+	             
+	             people.add(p);
 
 				System.out.printf("%d %s %s %d% .2f%n", age, fullName, address, zipCode, salary);
 				output.writeInt(age);
@@ -40,8 +55,21 @@ public class Lab11Prob02 {
 		} catch (IOException ex) {
 
 		}
-
-	}
+		
+		Collections.sort(people);
+		
+		try (DataOutputStream output = new DataOutputStream(new FileOutputStream(fileOutput)))
+        {
+            for (Person p : people)
+            {
+                output.writeUTF(p.toString());
+            }
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 
 }
 
@@ -58,7 +86,7 @@ class Person implements Comparable<Person> {
 		this.address = "";
 		this.zipCode = 0;
 		this.salary = 0.0;
-	}
+	}	
 
 	public int getAge() {
 		return age;
