@@ -33,7 +33,7 @@ public class Lab11Prob02
         }
         catch (EOFException ex)
         {
-            // Reached end of file; nothing needed here.
+           
         }
         catch (IOException ex)
         {
@@ -42,11 +42,11 @@ public class Lab11Prob02
 
         Collections.sort(people);
 
-        try (PrintWriter output = new PrintWriter(new FileOutputStream(fileOutput)))
+        try (DataOutputStream output = new DataOutputStream(new FileOutputStream(fileOutput)))
         {
             for (Person p : people)
             {
-                output.println(p.toString());
+                output.writeUTF(p.toString());
             }
         }
         catch (IOException ex)
